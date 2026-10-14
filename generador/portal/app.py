@@ -256,7 +256,7 @@ def candidato_desde_formulario(perfil, form, col):
             educacion[nivel] = {k: may(f"edu_{nivel}_{k}") for k in ("institucion", "pais", "ciudad", "titulo")}
     solo_primaria = form.get("solo_primaria") == "on"
     if solo_primaria and "primaria" not in educacion:
-        educacion["primaria"] = {"institucion": generar.CAPTEEC, "pais": "ECUADOR", "ciudad": "LA TRONCAL", "titulo": ""}
+        educacion["primaria"] = dict(generar.ESTUDIO_LECTO)
     if solo_primaria:
         marca = "PRI"
     else:

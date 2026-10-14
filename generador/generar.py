@@ -40,6 +40,8 @@ from plantillas import CARPETA_PLANTILLAS
 
 CARPETA_SALIDA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "salida")
 CAPTEEC = "CAPTEEC CENTRO DE CAPACITACIÓN TÉCNICA - EMPRESARIAL & TUTORIAS S.A.S."
+# Fila "Lecto-escritura (C03)" del C02 para quien rinde el C03
+ESTUDIO_LECTO = {"institucion": CAPTEEC, "pais": "ECUADOR", "ciudad": "LA TRONCAL", "titulo": "LECTO-ESCRITURA"}
 MARCA = re.compile(r"\{\{([A-Za-z0-9_]+)\}\}")
 
 
@@ -117,7 +119,7 @@ def datos_planos(cand, perfil, aj=None, asignaciones=None):
     if "CAPTEEC" in base.normalizar(edu.get("primaria", {}).get("institucion")):
         lecto = edu.pop("primaria")
     if necesita_c03(cand):
-        edu["lecto"] = lecto or {"institucion": CAPTEEC, "pais": "ECUADOR", "ciudad": "LA TRONCAL", "titulo": ""}
+        edu["lecto"] = {**ESTUDIO_LECTO, **{k: v for k, v in lecto.items() if v}}
     edad = int(cand["edad"]) if cand["edad"].isdigit() else cand["edad"]
     d = {
         "CODIGO": cand["codigo"], "NOMBRE": cand["nombre"], "CEDULA": cand["cedula"],

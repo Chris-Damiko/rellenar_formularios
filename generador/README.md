@@ -161,7 +161,7 @@ Las plantillas ya están armadas en `plantillas/`. Solo hay que rehacerlas
 
 - **C03** (lecto-escritura): se genera si la columna A de la base dice `PRI`.
   En ese caso, en el C02 se llena la fila **"Lecto-escritura (C03) cuando aplique"**
-  con "CAPTEEC … / ECUADOR / LA TRONCAL" (o con lo que traiga la base en el bloque
+  con "CAPTEEC … / ECUADOR / LA TRONCAL / LECTO-ESCRITURA" (o con lo que traiga la base en el bloque
   de primaria, si es CAPTEEC). La lecto-escritura no es la primaria: la fila
   "Primaria" queda vacía, salvo que la base traiga una escuela de verdad.
 - **Tratamiento:** "Estimado Sr." se cambia por "Estimado(a) Sr.(a)", porque la
