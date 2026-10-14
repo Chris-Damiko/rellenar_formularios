@@ -110,8 +110,14 @@ def datos_planos(cand, perfil, aj=None, asignaciones=None):
     examinador, ucs, lugar = eleccion(cand, perfil, aj, asignaciones)
     ingreso = datetime.datetime.strptime(examinador.get("fecha_ingreso") or "2023-03-06", "%Y-%m-%d")
     edu = dict(cand["educacion"])
-    if cand["marca"].startswith("PRI") and "primaria" not in edu:
-        edu["primaria"] = {"institucion": CAPTEEC, "pais": "ECUADOR", "ciudad": "LA TRONCAL", "titulo": ""}
+    # C02, fila "Lecto-escritura (C03) cuando aplique": el estudio en CAPTEEC de
+    # quien rinde el C03. En la base va en el bloque de primaria; no es la primaria,
+    # así que esa fila solo se llena si la base trae una escuela de verdad.
+    lecto = {}
+    if "CAPTEEC" in base.normalizar(edu.get("primaria", {}).get("institucion")):
+        lecto = edu.pop("primaria")
+    if necesita_c03(cand):
+        edu["lecto"] = lecto or {"institucion": CAPTEEC, "pais": "ECUADOR", "ciudad": "LA TRONCAL", "titulo": ""}
     edad = int(cand["edad"]) if cand["edad"].isdigit() else cand["edad"]
     d = {
         "CODIGO": cand["codigo"], "NOMBRE": cand["nombre"], "CEDULA": cand["cedula"],
@@ -128,7 +134,7 @@ def datos_planos(cand, perfil, aj=None, asignaciones=None):
         "LUGAR_TEXTO": lugar["texto"], "LUGAR_OEC": lugar["lugar"], "LUGAR_DIRECCION": lugar["direccion"],
         "LUGAR_SECTOR": lugar["sector"], "LUGAR_TELEFONO": lugar["telefono"],
     }
-    for nivel in ("primaria", "secundaria", "superior", "cuarto"):
+    for nivel in ("lecto", "primaria", "secundaria", "superior", "cuarto"):
         e = edu.get(nivel, {})
         for k in ("institucion", "pais", "ciudad", "titulo"):
             d[f"EDU_{nivel.upper()}_{k.upper()}"] = e.get(k, "")

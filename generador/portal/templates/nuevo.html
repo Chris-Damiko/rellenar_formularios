@@ -98,7 +98,7 @@
   <fieldset>
     <legend>Educación</legend>
     <label class="check"><input type="checkbox" id="solo_primaria" name="solo_primaria" {% if v.get('solo_primaria') %}checked{% endif %}>
-      Solo primaria: genera el C03 (lecto-escritura) y en el C02 pone la primaria en CAPTEEC</label>
+      Solo primaria: genera el C03 y en el C02 llena la fila Lecto-escritura (C03) con CAPTEEC</label>
     {% for n, titulo in niveles %}
     <p class="nota"><strong>{{ titulo }}</strong></p>
     <div class="campos">
