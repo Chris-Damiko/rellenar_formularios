@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block titulo %}Candidatos {{ perfil }}{% endblock %}
+{% block contenido %}
+<h1>Candidatos · {{ perfil }}</h1>
+<p class="sub">{{ NOMBRES_PERFIL[perfil] }} · {{ total }} en la base (se muestran los 200 más recientes)</p>
+<form method="get" class="fila-botones" style="margin-bottom:16px">
+  <input name="q" value="{{ q }}" placeholder="Buscar por código, nombre o cédula" style="max-width:360px">
+  <button class="boton sec" type="submit">Buscar</button>
+  <a class="boton" href="{{ url_for('nuevo', perfil=perfil) }}">Registrar candidato</a>
+  <a class="boton sec" href="{{ url_for('subir', perfil=perfil) }}">Subir Excel actualizado</a>
+</form>
+<div class="tabla-scroll">
+<table>
+  <thead><tr><th>Código</th><th>Nombre</th><th>Cédula</th><th>Examen</th><th>Examinador</th><th>Formularios</th></tr></thead>
+  <tbody>
+  {% for c in filas %}
+    <tr>
+      <td><a href="{{ url_for('candidato', perfil=perfil, codigo=c.codigo) }}">{{ c.codigo }}</a>
+        {% if c.amarilla %}<span class="amarilla">C13</span>{% endif %}</td>
+      <td>{{ c.nombre or "(sin nombre)" }}</td>
+      <td>{{ c.cedula }}</td>
+      <td>{{ c.fecha_exam|fecha }}</td>
+      <td>{{ c.examinador }}</td>
+      <td><span class="estado {{ c.estado_form|replace(' ', '-') }}">{{ c.estado_form }}</span></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

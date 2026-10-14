@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block titulo %}Nuevo {{ perfil }}{% endblock %}
+{% macro campo(nombre, etiqueta, tipo="text", clase="", extra="") -%}
+  <div class="{{ clase }}">
+    <label for="{{ nombre }}">{{ etiqueta }}</label>
+    <input id="{{ nombre }}" name="{{ nombre }}" type="{{ tipo }}" value="{{ v.get(nombre, '') }}" {{ extra|safe }}>
+  </div>
+{%- endmacro %}
+{% block contenido %}
+<h1>Registrar candidato · {{ perfil }}</h1>
+<p class="sub">{{ p.esquema }}<br><span class="nota">Se guardará en: {{ ruta_base }}</span></p>
+
+<form method="post" autocomplete="off">
+  <fieldset>
+    <legend>Proceso</legend>
+    <div class="campos">
+      {{ campo("codigo", "Código", extra='required pattern="' ~ perfil ~ '-[0-9]+"') }}
+      {{ campo("fecha_reg", "Fecha de registro (solicitud)", "date", extra="required") }}
+      {{ campo("fecha_acep", "Fecha de aceptación", "date", extra="required") }}
+      {{ campo("fecha_exam", "Fecha de examen", "date", extra="required") }}
+      {{ campo("hora", "Hora de examen", "time") }}
+      {{ campo("costo", "Costo") }}
+      <div>
+        <label for="examinador">Examinador</label>
+        <select id="examinador" name="examinador">
+          {% for e in examinadores %}
+          <option value="{{ e.id }}" {% if e.id == v.get('examinador') %}selected{% endif %}>{{ e.nombre }} ({{ e.id }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="ancho">
+        <label for="lugar">Lugar de examinación</label>
+        <select id="lugar" name="lugar">
+          {% for l in p.lugares %}
+          <option value="{{ l.id }}" {% if l.id == v.get('lugar') %}selected{% endif %}>{{ l.texto }} · {{ l.lugar }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="ancho">
+        <label>Unidades de competencia</label>
+        <div class="ucs">
+          {% for u in p.ucs %}
+          <label class="check"><input type="checkbox" name="ucs" value="{{ u }}" {% if u in v.get('ucs', []) %}checked{% endif %}>{{ u }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="ancho">
+        <label class="check"><input type="checkbox" name="ausente" {% if v.get('ausente') %}checked{% endif %}>
+          Ausente o cambio de fecha: genera el C13 y pinta la fila de amarillo en la base</label>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Datos personales</legend>
+    <div class="campos">
+      {{ campo("nombre", "Apellidos y nombres", clase="ancho", extra="required") }}
+      {{ campo("cedula", "Cédula", extra='required inputmode="numeric"') }}
+      {{ campo("cod_exam", "Código de examen (EXCCL-…)") }}
+      {{ campo("f_naci", "Fecha de nacimiento", "date") }}
+      {{ campo("edad", "Edad", "number", extra='min="15" max="99"') }}
+      <div>
+        <label for="estado">Estado civil</label>
+        <select id="estado" name="estado">
+          <option value=""></option>
+          {% for e in estados %}<option {% if e == v.get('estado') %}selected{% endif %}>{{ e }}</option>{% endfor %}
+        </select>
+      </div>
+      {{ campo("correo", "Correo", "email") }}
+      {{ campo("telefono", "Teléfono") }}
+      {{ campo("celular", "Celular") }}
+      <div class="ancho">
+        <label class="check"><input type="checkbox" name="cedula_extranjera" {% if v.get('cedula_extranjera') %}checked{% endif %}>
+          Pasaporte o cédula extranjera (no revisar dígito verificador)</label>
+        <label class="check"><input type="checkbox" name="permitir_repetido" {% if v.get('permitir_repetido') %}checked{% endif %}>
+          Permitir aunque la cédula ya esté registrada en este perfil (recertificación)</label>
+        <span id="aviso_cedula" class="nota"></span>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Domicilio</legend>
+    <div class="campos">
+      <div>
+        <label for="provincia">Provincia</label>
+        <select id="provincia" name="provincia">
+          <option value=""></option>
+          {% for pr in provincias %}<option {% if pr == v.get('provincia') %}selected{% endif %}>{{ pr }}</option>{% endfor %}
+        </select>
+      </div>
+      {{ campo("canton", "Cantón") }}
+      {{ campo("parroquia", "Parroquia") }}
+      {{ campo("direccion", "Dirección", clase="ancho") }}
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Educación</legend>
+    <label class="check"><input type="checkbox" id="solo_primaria" name="solo_primaria" {% if v.get('solo_primaria') %}checked{% endif %}>
+      Solo primaria: genera el C03 (lecto-escritura) y en el C02 pone la primaria en CAPTEEC</label>
+    {% for n, titulo in niveles %}
+    <p class="nota"><strong>{{ titulo }}</strong></p>
+    <div class="campos">
+      {{ campo("edu_" ~ n ~ "_institucion", "Institución") }}
+      {{ campo("edu_" ~ n ~ "_pais", "País") }}
+      {{ campo("edu_" ~ n ~ "_ciudad", "Ciudad") }}
+      {{ campo("edu_" ~ n ~ "_titulo", "Título") }}
+    </div>
+    {% endfor %}
+  </fieldset>
+
+  <fieldset>
+    <legend>Capacitación</legend>
+    {% for i in range(1, n_cap + 1) %}
+    <div class="campos">
+      {{ campo("cap" ~ i ~ "_curso", "Curso " ~ i) }}
+      {{ campo("cap" ~ i ~ "_institucion", "Institución") }}
+      {{ campo("cap" ~ i ~ "_fechas", "Fechas (p. ej. Del 01 al 15 de mayo de 2026)") }}
+      {{ campo("cap" ~ i ~ "_horas", "Horas", "number") }}
+    </div>
+    {% endfor %}
+  </fieldset>
+
+  <fieldset>
+    <legend>Experiencia laboral</legend>
+    {% for i in range(1, n_exp + 1) %}
+    <div class="campos">
+      {{ campo("exp" ~ i ~ "_empresa", "Empresa " ~ i) }}
+      {{ campo("exp" ~ i ~ "_direccion", "Dirección") }}
+      {{ campo("exp" ~ i ~ "_telefono", "Teléfono") }}
+      {{ campo("exp" ~ i ~ "_desde", "Desde", "date") }}
+      {{ campo("exp" ~ i ~ "_hasta", "Hasta", "date") }}
+      {{ campo("exp" ~ i ~ "_actividad", "Funciones") }}
+    </div>
+    {% endfor %}
+  </fieldset>
+
+  <div class="fila-botones">
+    <button class="boton" type="submit">Guardar en la base y generar formularios</button>
+    <a class="boton sec" href="{{ url_for('candidatos', perfil=perfil) }}">Cancelar</a>
+  </div>
+</form>
+
+<script>
+  // Edad a partir de la fecha de nacimiento
+  const naci = document.getElementById("f_naci"), edad = document.getElementById("edad");
+  naci.addEventListener("change", () => {
+    if (!naci.value) return;
+    const n = new Date(naci.value), h = new Date();
+    let e = h.getFullYear() - n.getFullYear();
+    if (h.getMonth() < n.getMonth() || (h.getMonth() === n.getMonth() && h.getDate() < n.getDate())) e--;
+    edad.value = e;
+  });
+  // Cédula ecuatoriana: dígito verificador
+  const ced = document.getElementById("cedula"), aviso = document.getElementById("aviso_cedula");
+  function cedulaValida(c) {
+    if (!/^\d{10}$/.test(c)) return false;
+    const p = +c.slice(0, 2);
+    if (!((p >= 1 && p <= 24) || p === 30) || +c[2] >= 6) return false;
+    let s = 0;
+    for (let i = 0; i < 9; i++) { let v = +c[i] * (i % 2 === 0 ? 2 : 1); s += v > 9 ? v - 9 : v; }
+    return (10 - s % 10) % 10 === +c[9];
+  }
+  ced.addEventListener("input", () => {
+    aviso.textContent = ced.value.length >= 10 && !cedulaValida(ced.value) ? "La cédula no pasa el dígito verificador." : "";
+  });
+</script>
+{% endblock %}

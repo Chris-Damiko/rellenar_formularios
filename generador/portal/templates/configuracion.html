@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block titulo %}Configuración{% endblock %}
+{% block contenido %}
+<h1>Configuración</h1>
+<p class="sub">Los cambios se guardan en generador/ajustes.json y se aplican a los formularios que se generen desde ahora.</p>
+
+<h2 id="examinadores">Examinadores</h2>
+<div class="tabla-scroll">
+<table>
+  <thead><tr><th>Código</th><th>Nombre</th><th>Cédula</th><th>Celular</th><th>Trato</th><th>Ingreso</th><th>Perfiles</th><th></th></tr></thead>
+  <tbody>
+  {% for e in aj.examinadores %}
+    <tr>
+      <td>{{ e.id }}</td><td>{{ e.nombre }}</td><td>{{ e.cedula }}</td><td>{{ e.celular }}</td>
+      <td>{{ e.trato }}</td><td>{{ e.fecha_ingreso }}</td><td>{{ e.perfiles|join(", ") }}</td>
+      <td><form method="post" action="{{ url_for('borrar_examinador', id_=e.id) }}" onsubmit="return confirm('¿Eliminar {{ e.nombre }}?')">
+        <button class="boton peligro" type="submit">Eliminar</button></form></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<form method="post" action="{{ url_for('guardar_examinador') }}" style="margin-top:12px">
+  <fieldset>
+    <legend>Agregar o editar examinador</legend>
+    <p class="nota">Para editar uno existente escriba su código (por ejemplo EXA5). Déjelo vacío para crear uno nuevo.
+      El nombre, la cédula, el trato y la fecha de ingreso salen en el T04, el C06, el C08, el C11 y el C13.</p>
+    <div class="campos">
+      <div><label>Código</label><input name="id" placeholder="(nuevo)"></div>
+      <div class="ancho"><label>Nombres y apellidos</label><input name="nombre" required></div>
+      <div><label>Cédula</label><input name="cedula" required></div>
+      <div><label>Celular</label><input name="celular"></div>
+      <div><label>Correo</label><input name="correo" type="email"></div>
+      <div><label>Trato en el T04</label><select name="trato"><option>el Sr.</option><option>la Sra.</option></select></div>
+      <div><label>Fecha de ingreso como examinador</label><input name="fecha_ingreso" type="date" value="2023-03-06"></div>
+      <div class="ancho"><label>Perfiles que puede examinar</label>
+        <div class="ucs">{% for p in perfiles %}<label class="check"><input type="checkbox" name="perfiles" value="{{ p }}">{{ p }}</label>{% endfor %}</div>
+      </div>
+    </div>
+    <div class="fila-botones" style="margin-bottom:10px"><button class="boton" type="submit">Guardar examinador</button></div>
+  </fieldset>
+</form>
+
+<h2 style="margin-top:24px">Perfiles</h2>
+{% for perfil in perfiles %}{% set p = aj.perfiles[perfil] %}
+<form method="post" action="{{ url_for('guardar_perfil', perfil=perfil) }}" id="perfil-{{ perfil }}">
+  <fieldset>
+    <legend>{{ perfil }} · {{ NOMBRES_PERFIL[perfil] }}</legend>
+    <p class="nota">{{ p.esquema }}</p>
+    <div class="campos">
+      <div><label>Unidades de competencia (máx. UC5)</label><input name="ucs" value="{{ p.ucs|join(', ') }}"></div>
+      <div><label>Examinador predeterminado</label>
+        <select name="examinador">
+          {% for e in aj.examinadores %}<option value="{{ e.id }}" {% if e.id == p.examinador %}selected{% endif %}>{{ e.nombre }} ({{ e.id }})</option>{% endfor %}
+        </select></div>
+      <div><label>Costo</label><input name="costo" value="{{ p.costo }}"></div>
+    </div>
+    <p class="nota"><strong>Lugares de examinación</strong> · "Texto en formularios" es lo que sale en C04, C07, C08, C11, C12 y C13;
+      los demás campos van al C02 (sección 1.2) y a la base.</p>
+    <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Pred.</th><th>Dentro/fuera</th><th>Tipo</th><th>Ciudad</th><th>Dirección</th><th>Sector</th><th>Teléfono</th><th>Texto en formularios</th><th>Borrar</th></tr></thead>
+      <tbody>
+      {% for l in p.lugares + [{"id": "", "lugar": "", "tipo": "", "ciudad": "", "direccion": "", "sector": "", "telefono": "", "texto": ""}] %}
+        <tr>
+          <td><input type="radio" name="lugar_predeterminado" value="{{ l.id }}" {% if l.id and l.id == p.lugar %}checked{% endif %} {% if not l.id %}disabled{% endif %}>
+              <input type="hidden" name="lugar_{{ loop.index }}_id" value="{{ l.id }}"></td>
+          <td><input name="lugar_{{ loop.index }}_lugar" value="{{ l.lugar }}" placeholder="DENTRO DEL OEC"></td>
+          <td><input name="lugar_{{ loop.index }}_tipo" value="{{ l.tipo }}" placeholder="TALLER"></td>
+          <td><input name="lugar_{{ loop.index }}_ciudad" value="{{ l.ciudad }}"></td>
+          <td><input name="lugar_{{ loop.index }}_direccion" value="{{ l.direccion }}" placeholder="{% if not l.id %}(nuevo lugar){% endif %}"></td>
+          <td><input name="lugar_{{ loop.index }}_sector" value="{{ l.sector }}"></td>
+          <td><input name="lugar_{{ loop.index }}_telefono" value="{{ l.telefono }}"></td>
+          <td><input name="lugar_{{ loop.index }}_texto" value="{{ l.texto }}"></td>
+          <td>{% if l.id %}<input type="checkbox" name="lugar_{{ loop.index }}_borrar">{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    <div class="fila-botones" style="margin:10px 0"><button class="boton" type="submit">Guardar {{ perfil }}</button></div>
+  </fieldset>
+</form>
+{% endfor %}
+{% endblock %}

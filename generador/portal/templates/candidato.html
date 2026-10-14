@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block titulo %}{{ c.codigo }}{% endblock %}
+{% block contenido %}
+<h1>{{ c.codigo }} · {{ c.nombre }}</h1>
+<p class="sub">Cédula {{ c.cedula }} · examen {{ c.fecha_exam|fecha }} {% if c.hora %}{{ c.hora.strftime('%H:%M') }}{% endif %}
+  · formularios: <span class="estado {{ estado_form|replace(' ', '-') }}">{{ estado_form }}</span>
+  {% if c.amarilla %}<span class="amarilla">fila amarilla: lleva C13</span>{% endif %}
+  {% if c03 %}<span class="amarilla">solo primaria: lleva C03</span>{% endif %}</p>
+
+<div class="rejilla" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))">
+  <div class="tarjeta">
+    <h2>Formularios generados</h2>
+    {% if archivos %}
+      <ul class="archivos">
+        {% for a in archivos %}<li><a href="{{ url_for('descargar_archivo', perfil=perfil, codigo=c.codigo, archivo=a) }}">{{ a }}</a></li>{% endfor %}
+      </ul>
+      <a class="boton" href="{{ url_for('descargar_zip', perfil=perfil, codigo=c.codigo) }}">Descargar todo (.zip)</a>
+      <p class="nota">También están en generador/salida/{{ perfil }}/{{ c.codigo }}/FORMULARIOS/</p>
+    {% else %}
+      <p class="nota">Todavía no se generaron desde el portal.</p>
+    {% endif %}
+  </div>
+
+  <form class="tarjeta" method="post">
+    <h2>Examinador, unidades y lugar</h2>
+    {% if not asignado %}<p class="nota">Sin elección guardada: se usan los predeterminados del perfil.</p>{% endif %}
+    <label for="examinador">Examinador</label>
+    <select id="examinador" name="examinador">
+      {% for e in examinadores %}<option value="{{ e.id }}" {% if e.id == exa.id %}selected{% endif %}>{{ e.nombre }} ({{ e.id }})</option>{% endfor %}
+    </select>
+    <label style="margin-top:10px">Unidades de competencia</label>
+    <div class="ucs">
+      {% for u in ["UC1", "UC2", "UC3", "UC4", "UC5"] if u in p.ucs or u in ucs %}
+      <label class="check"><input type="checkbox" name="ucs" value="{{ u }}" {% if u in ucs %}checked{% endif %}>{{ u }}</label>
+      {% endfor %}
+    </div>
+    <label for="lugar" style="margin-top:10px">Lugar</label>
+    <select id="lugar" name="lugar">
+      {% for l in p.lugares %}<option value="{{ l.id }}" {% if lugar and l.id == lugar.id %}selected{% endif %}>{{ l.texto }}</option>{% endfor %}
+    </select>
+    <div class="fila-botones"><button class="boton" type="submit">Generar formularios</button></div>
+  </form>
+</div>
+
+<h2 style="margin-top:24px">Datos en la base</h2>
+<div class="tabla-scroll">
+<table>
+  <tbody>
+    <tr><th>Domicilio</th><td>{{ c.provincia }} · {{ c.canton }} · {{ c.parroquia }} · {{ c.direccion }}</td></tr>
+    <tr><th>Contacto</th><td>{{ c.correo }} · {{ c.telefono }} · {{ c.celular }}</td></tr>
+    <tr><th>Fechas</th><td>registro {{ c.fecha_reg|fecha }} · aceptación {{ c.fecha_acep|fecha }} · examen {{ c.fecha_exam|fecha }}</td></tr>
+    <tr><th>Educación</th><td>{% for n, e in c.educacion.items() %}{{ n }}: {{ e.institucion }} ({{ e.titulo }})<br>{% else %}—{% endfor %}</td></tr>
+    <tr><th>Capacitación</th><td>{% for k in c.capacitaciones %}{{ k.curso }} · {{ k.institucion }} · {{ k.horas }} h<br>{% else %}—{% endfor %}</td></tr>
+    <tr><th>Experiencia</th><td>{% for e in c.experiencias %}{{ e.empresa }} · {{ e.desde|fecha }} a {{ e.hasta|fecha }} · {{ e.actividad }}<br>{% else %}—{% endfor %}</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="nota">Para corregir estos datos, edítelos en la base Excel y vuelva a generar.</p>
+{% endblock %}

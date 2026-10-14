@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block titulo %}Lote {{ perfil }}{% endblock %}
+{% block contenido %}
+<h1>Formularios generados · {{ perfil }}</h1>
+<p class="sub">{{ filas|length }} candidatos · respaldo de la base anterior: {{ respaldo }}</p>
+{% if filas %}
+<div class="fila-botones" style="margin-bottom:16px">
+  <a class="boton" href="{{ url_for('descargar_lote', perfil=perfil, lote=lote) }}">Descargar todo (.zip)</a>
+</div>
+{% endif %}
+{% if revisar %}
+<h2>Para revisar a mano</h2>
+<ul>{% for codigo, avisos in revisar %}<li><strong>{{ codigo }}</strong>: {{ avisos|join("; ") }}</li>{% endfor %}</ul>
+{% endif %}
+<div class="tabla-scroll"><table>
+  <thead><tr><th>Código</th><th>Nombre</th><th>Cédula</th><th>Examen</th></tr></thead>
+  <tbody>{% for c in filas %}
+    <tr><td><a href="{{ url_for('candidato', perfil=perfil, codigo=c.codigo) }}">{{ c.codigo }}</a></td>
+      <td>{{ c.nombre }}</td><td>{{ c.cedula }}</td><td>{{ c.fecha_exam|fecha }}</td></tr>
+  {% endfor %}</tbody>
+</table></div>
+{% endblock %}

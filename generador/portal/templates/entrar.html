@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block contenido %}
+<div class="tarjeta" style="max-width:380px;margin:40px auto">
+  <h1>Entrar</h1>
+  <p class="sub">Portal de formularios OEC · CAPTEEC</p>
+  <form method="post">
+    <label for="usuario">Usuario</label>
+    <input id="usuario" name="usuario" autocomplete="username" required autofocus>
+    <label for="clave" style="margin-top:10px">Contraseña</label>
+    <input id="clave" name="clave" type="password" autocomplete="current-password" required>
+    <div class="fila-botones" style="margin-top:14px"><button class="boton" type="submit">Entrar</button></div>
+  </form>
+</div>
+{% endblock %}

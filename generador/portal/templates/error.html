@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block titulo %}Error{% endblock %}
+{% block contenido %}
+<h1>Algo salió mal</h1>
+<p class="sub">El error quedó guardado en el registro del portal ({{ error.__class__.__name__ }}). Avise a soporte con la hora en que pasó.</p>
+<a class="boton" href="{{ url_for('inicio') }}">Volver al inicio</a>
+{% endblock %}

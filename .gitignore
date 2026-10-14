@@ -1,0 +1,10 @@
+# Entornos virtuales de Python
+.venv/
+__pycache__/
+
+# Archivos generados y salidas pesadas
+/generador/salida/
+
+# Documentos pesados y certificaciones locales que no van al repositorio
+/CATEEC-OEC/0. Certificaciones Registradas/
+/CATEEC-OEC/1. Doc Registros Calificacion/

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Perfiles</h1>
+<p class="sub">Registre un candidato nuevo: se agrega a la base Excel del perfil y se generan sus formularios.</p>
+<div class="rejilla">
+  {% for t in tarjetas %}
+  <div class="tarjeta">
+    <h3>{{ t.perfil }} · {{ t.nombre }}</h3>
+    <p class="dato">{{ t.total }} candidatos en la base · último {{ t.ultimo_base }}</p>
+    <p class="dato">Último generado: {{ t.ultimo_generado }}</p>
+    <p class="dato">Examinador: {{ t.examinador }}</p>
+    <p class="dato">Unidades: {{ t.ucs }}</p>
+    <div class="acciones">
+      <a class="boton" href="{{ url_for('nuevo', perfil=t.perfil) }}">Registrar candidato</a>
+      <a class="boton sec" href="{{ url_for('subir', perfil=t.perfil) }}">Subir Excel actualizado</a>
+      <a class="boton sec" href="{{ url_for('candidatos', perfil=t.perfil) }}">Candidatos</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

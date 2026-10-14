@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titulo %}Subir base {{ perfil }}{% endblock %}
+{% block contenido %}
+<h1>Subir Excel actualizado · {{ perfil }}</h1>
+<p class="sub">Último candidato con formularios generados: <strong>{{ ultimo or "ninguno" }}</strong>.
+  Al confirmar se reemplaza la base ({{ nombre_base }}), se guarda una copia de la anterior y se generan los
+  formularios de los códigos posteriores.</p>
+
+{% if not vista %}
+<form class="tarjeta" method="post" enctype="multipart/form-data" style="max-width:560px">
+  <label for="archivo">Archivo Excel de la base de {{ perfil }} (.xlsx)</label>
+  <input id="archivo" name="archivo" type="file" accept=".xlsx,.xlsm" required>
+  <div class="fila-botones" style="margin-top:12px"><button class="boton" type="submit">Revisar archivo</button></div>
+  <p class="nota">Primero se muestra qué va a pasar; nada cambia hasta que confirme.</p>
+</form>
+{% else %}
+<div class="tarjeta">
+  <h2>{{ vista.nombre }}</h2>
+  <p class="dato">{{ vista.total }} candidatos en el archivo (la base actual tiene {{ vista.total_actual }}) · último código {{ vista.ultimo_nuevo }}</p>
+  {% if vista.desaparecen %}
+    <ul class="mensajes"><li class="aviso">Ojo: {{ vista.desaparecen|length }} códigos de la base actual no están en el archivo nuevo
+      ({{ vista.desaparecen[:10]|join(", ") }}{% if vista.desaparecen|length > 10 %}…{% endif %}). Revise que sea el archivo correcto.</li></ul>
+  {% endif %}
+  {% if vista.por_generar %}
+    <p><strong>Se generarán {{ vista.por_generar|length - vista.incompletos|length }} candidatos nuevos</strong>
+      ({{ vista.por_generar[0].codigo }} a {{ vista.por_generar[-1].codigo }}).
+      {% if vista.incompletos %}{{ vista.incompletos|length }} sin nombre o cédula no se generan todavía: {{ vista.incompletos|join(", ") }}.{% endif %}</p>
+    <div class="tabla-scroll"><table>
+      <thead><tr><th>Código</th><th>Nombre</th><th>Cédula</th><th>Examen</th><th></th></tr></thead>
+      <tbody>{% for c in vista.por_generar[:300] %}
+        <tr><td>{{ c.codigo }}</td><td>{{ c.nombre or "(sin nombre)" }}</td><td>{{ c.cedula }}</td><td>{{ c.fecha_exam|fecha }}</td>
+          <td>{% if c.amarilla %}<span class="amarilla">C13</span>{% endif %}</td></tr>
+      {% endfor %}</tbody>
+    </table></div>
+  {% else %}
+    <p>No hay candidatos nuevos después de {{ ultimo }}. Igual puede reemplazar la base (por ejemplo, si corrigieron datos).</p>
+  {% endif %}
+  <form method="post" action="{{ url_for('confirmar_subida', perfil=perfil, ficha=vista.ficha) }}" class="fila-botones" style="margin-top:14px">
+    <button class="boton" type="submit">Confirmar: reemplazar base y generar</button>
+    <a class="boton sec" href="{{ url_for('subir', perfil=perfil) }}">Cancelar</a>
+  </form>
+</div>
+{% endif %}
+{% endblock %}

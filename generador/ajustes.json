@@ -1,0 +1,321 @@
+{
+  "examinadores": [
+    {
+      "id": "EXA3",
+      "nombre": "BERNARDA PRISCILA AGUIRRE ARIAS",
+      "cedula": "0104111760",
+      "celular": "0960809613",
+      "correo": "",
+      "trato": "la Sra.",
+      "fecha_ingreso": "2023-03-06",
+      "perfiles": [
+        "PRC"
+      ]
+    },
+    {
+      "id": "EXA5",
+      "nombre": "HECTOR ANDRES ROMERO AUCANCELA",
+      "cedula": "0302713722",
+      "celular": "0987136236",
+      "correo": "",
+      "trato": "el Sr.",
+      "fecha_ingreso": "2023-03-06",
+      "perfiles": [
+        "PRE",
+        "OR"
+      ]
+    },
+    {
+      "id": "EXA2",
+      "nombre": "ADRIAN FABRICIO PESÁNTEZ PESÁNTEZ",
+      "cedula": "0106682172",
+      "celular": "0990852866",
+      "correo": "",
+      "trato": "el Sr.",
+      "fecha_ingreso": "2023-03-06",
+      "perfiles": [
+        "GS",
+        "MA"
+      ]
+    },
+    {
+      "id": "EXA7",
+      "nombre": "BYRON MARCELO CABRERA RODRIGUEZ",
+      "cedula": "0706410487",
+      "celular": "0969346359",
+      "correo": "",
+      "trato": "el Sr.",
+      "fecha_ingreso": "2023-03-06",
+      "perfiles": [
+        "IE"
+      ]
+    },
+    {
+      "id": "EXA8",
+      "nombre": "MILTON FERNANDO VELECELA MEDINA",
+      "cedula": "0302438825",
+      "celular": "0991413460",
+      "correo": "",
+      "trato": "el Sr.",
+      "fecha_ingreso": "2023-03-06",
+      "perfiles": [
+        "AL"
+      ]
+    },
+    {
+      "id": "EXA6",
+      "nombre": "MARLO RENE CORONEL CALDERON",
+      "cedula": "0923369565",
+      "celular": "0969145126",
+      "correo": "",
+      "trato": "el Sr.",
+      "fecha_ingreso": "2023-03-06",
+      "perfiles": [
+        "AO",
+        "FF",
+        "PRC"
+      ]
+    },
+    {
+      "id": "EXA4",
+      "nombre": "ANA BELEN AVILA CRESPO",
+      "cedula": "0302866165",
+      "celular": "0993836068",
+      "correo": "",
+      "trato": "la Sra.",
+      "fecha_ingreso": "2023-03-06",
+      "perfiles": [
+        "MQ"
+      ]
+    }
+  ],
+  "perfiles": {
+    "PRC": {
+      "examinador": "EXA3",
+      "esquema": "PREVENCIÓN DE RIESGOS LABORALES EN ACTIVIDADES DE ALTO RIESGO: CONSTRUCCIÓN Y OBRA CIVIL",
+      "ucs": [
+        "UC1",
+        "UC2"
+      ],
+      "lugares": [
+        {
+          "lugar": "TALLER OEC",
+          "direccion": "Flor del Bosque y Callejón B S/N y la calle Eloy Alfaro",
+          "sector": "LA TRONCAL",
+          "telefono": "0967611188",
+          "texto": "Flor del Bosque y Callejón B S/N y la calle Eloy Alfaro",
+          "tipo": "TALLER",
+          "ciudad": "LA TRONCAL",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "PRE": {
+      "examinador": "EXA5",
+      "esquema": "PREVENCIÓN DE RIESGOS LABORALES EN ACTIVIDADES DE ALTO RIESGO: ENERGÍA ELÉCTRICA",
+      "ucs": [
+        "UC1",
+        "UC2",
+        "UC3"
+      ],
+      "lugares": [
+        {
+          "lugar": "DENTRO DEL OEC",
+          "direccion": "Flor del Bosque y Callejón B S/N y la calle Eloy Alfaro",
+          "sector": "Flor del Bosque",
+          "telefono": "0963154154",
+          "texto": "Flor del Bosque y Callejón B S/N y la calle Eloy Alfaro",
+          "tipo": "TALLER",
+          "ciudad": "LA TRONCAL",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "GS": {
+      "examinador": "EXA2",
+      "esquema": "GESTIÓN DE SOLDADURA",
+      "ucs": [
+        "UC1",
+        "UC2",
+        "UC3",
+        "UC4",
+        "UC5"
+      ],
+      "lugares": [
+        {
+          "lugar": "FUERA DEL OEC",
+          "direccion": "E40 Av. 25 de agosto",
+          "sector": "LA TRONCAL",
+          "telefono": "072422389",
+          "texto": "La Troncal, E40 Av. 25 de agosto",
+          "tipo": "TALLER",
+          "ciudad": "LA TRONCAL",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "IE": {
+      "examinador": "EXA7",
+      "esquema": "INSTALACIONES ELÉCTRICAS",
+      "ucs": [
+        "UC1",
+        "UC2"
+      ],
+      "lugares": [
+        {
+          "lugar": "DENTRO DEL OEC",
+          "direccion": "Flor del Bosque y Callejón B S/N y la calle Eloy Alfaro",
+          "sector": "LA TRONCAL",
+          "telefono": "0967611188",
+          "texto": "La Troncal, Flor del Bosque y Callejón B S/N y la calle Eloy Alfaro",
+          "tipo": "TALLER OEC",
+          "ciudad": "LA TRONCAL",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "MA": {
+      "examinador": "EXA2",
+      "esquema": "MECATRÓNICA AUTOMOTRIZ",
+      "ucs": [
+        "UC1",
+        "UC2",
+        "UC3"
+      ],
+      "lugares": [
+        {
+          "lugar": "FUERA DEL OEC",
+          "direccion": "AV. UNIVERSITARIA Y CALLE QUITO",
+          "sector": "LOJA",
+          "telefono": "0967611188",
+          "texto": "AV. UNIVERSITARIA Y CALLE QUITO",
+          "tipo": "TALLER",
+          "ciudad": "LOJA",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "OR": {
+      "examinador": "EXA5",
+      "esquema": "OPERACIONES DE LÍNEAS Y REDES ENERGIZADAS",
+      "ucs": [
+        "UC1",
+        "UC2"
+      ],
+      "lugares": [
+        {
+          "lugar": "FUERA DEL OEC",
+          "direccion": "La Troncal, Vía al recinto La Puntilla",
+          "sector": "La Puntilla",
+          "telefono": "0967611188",
+          "texto": "La Troncal, Vía al recinto La Puntilla",
+          "tipo": "TALLER OEC",
+          "ciudad": "LA TRONCAL",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "AL": {
+      "examinador": "EXA8",
+      "esquema": "ACTIVIDADES AUXILIARES DE LINIERO",
+      "ucs": [
+        "UC1",
+        "UC2"
+      ],
+      "lugares": [
+        {
+          "lugar": "DENTRO DEL OEC",
+          "direccion": "HJ6R+9FW, Vía al recinto, La Puntilla",
+          "sector": "La Puntilla",
+          "telefono": "0967611188",
+          "texto": "HJ6R+9FW, Vía al recinto, La Puntilla",
+          "tipo": "EMPRESA",
+          "ciudad": "LA TRONCAL",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "AO": {
+      "examinador": "EXA6",
+      "esquema": "OFIMÁTICA: ASISTENCIA ADMINISTRATIVA CON MANEJO DE OFIMÁTICA",
+      "ucs": [
+        "UC1",
+        "UC2"
+      ],
+      "lugares": [
+        {
+          "lugar": "DENTRO DEL OEC",
+          "direccion": "Juan Montalvo y Abdón Calderón",
+          "sector": "El Triunfo",
+          "telefono": "0967611188",
+          "texto": "Juan Montalvo y Abdón Calderón",
+          "tipo": "EMPRESA",
+          "ciudad": "EL TRIUNFO",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "FF": {
+      "examinador": "EXA6",
+      "esquema": "FORMACIÓN DE FORMADORES",
+      "ucs": [
+        "UC1",
+        "UC2",
+        "UC3"
+      ],
+      "lugares": [
+        {
+          "lugar": "DENTRO DEL OEC",
+          "direccion": "AV. 25 DE AGOSTO 1239 Y 10 DE AGOSTO, #1239",
+          "sector": "La Troncal",
+          "telefono": "0967611188",
+          "texto": "AV. 25 DE AGOSTO 1239 Y 10 DE AGOSTO, #1239",
+          "tipo": "EMPRESA",
+          "ciudad": "LA TRONCAL",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    },
+    "MQ": {
+      "examinador": "EXA4",
+      "esquema": "MAQUILLAJE",
+      "ucs": [
+        "UC1",
+        "UC2",
+        "UC3"
+      ],
+      "lugares": [
+        {
+          "lugar": "TALLER OEC",
+          "direccion": "Calle del Zafrero y Jose Peralta",
+          "sector": "La Troncal",
+          "telefono": "0967611188",
+          "texto": "Calle del Zafrero y José Peralta",
+          "tipo": "TALLER OEC",
+          "ciudad": "LA TRONCAL",
+          "id": "L1"
+        }
+      ],
+      "lugar": "L1",
+      "costo": 10
+    }
+  }
+}
