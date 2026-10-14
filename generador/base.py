@@ -147,7 +147,8 @@ class Columnas:
             })
 
         # Educación: bloques INSITUCION/PAIS/CIUDAD/TITULO entre la capacitación y COSTO.
-        # 4 bloques = primaria (estudio CAPTEEC), secundaria, superior, cuarto nivel.
+        # 4 bloques = primaria (estudio CAPTEEC: en el C02 va en la fila Lecto-escritura,
+        # ver generar.datos_planos), secundaria, superior, cuarto nivel.
         # 3 bloques = secundaria, superior, cuarto nivel.
         inicio_edu = (cursos[-1] if cursos else fin_personal)
         bloques = self._todos(["INSITUCION", "INSTITUCION"], inicio_edu + 1, costo)

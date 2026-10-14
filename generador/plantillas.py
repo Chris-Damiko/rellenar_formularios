@@ -116,7 +116,7 @@ def celdas_c02(ws):
     }
     if not base.normalizar(ws[f"H{f('Teléfono:')}"].value).startswith("CELULAR"):
         raise ValueError("C02: no está la etiqueta 'Celular:' junto al teléfono")
-    for etiqueta, nivel in [("Primaria", "PRIMARIA"), ("Secundaria", "SECUNDARIA"),
+    for etiqueta, nivel in [("Lecto-escritura", "LECTO"), ("Primaria", "PRIMARIA"), ("Secundaria", "SECUNDARIA"),
                             ("Tercer nivel", "SUPERIOR"), ("Cuarto nivel", "CUARTO")]:
         fila = f(etiqueta)
         for col, k in [("B", "INSTITUCION"), ("H", "PAIS"), ("I", "CIUDAD"), ("J", "TITULO")]:

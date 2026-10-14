@@ -256,7 +256,7 @@ def candidato_desde_formulario(perfil, form, col):
             educacion[nivel] = {k: may(f"edu_{nivel}_{k}") for k in ("institucion", "pais", "ciudad", "titulo")}
     solo_primaria = form.get("solo_primaria") == "on"
     if solo_primaria and "primaria" not in educacion:
-        educacion["primaria"] = {"institucion": generar.CAPTEEC, "pais": "ECUADOR", "ciudad": "LA TRONCAL", "titulo": ""}
+        educacion["primaria"] = dict(generar.ESTUDIO_LECTO)
     if solo_primaria:
         marca = "PRI"
     else:
@@ -411,7 +411,7 @@ def candidato(perfil, codigo):
     return render_template("candidato.html", perfil=perfil, c=c, p=p, archivos=archivos,
                            examinadores=ajustes.examinadores_de(aj, perfil), exa=exa, ucs=ucs, lugar=lugar,
                            asignado=bool(a), estado_form=estado_formularios(perfil, codigo),
-                           c03=generar.necesita_c03(c))
+                           c03=generar.necesita_c03(c), educacion=generar.educacion_legible(c))
 
 
 @app.route("/descargar/<perfil>/<codigo>.zip")
