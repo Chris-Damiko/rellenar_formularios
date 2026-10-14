@@ -49,7 +49,7 @@
     <tr><th>Domicilio</th><td>{{ c.provincia }} · {{ c.canton }} · {{ c.parroquia }} · {{ c.direccion }}</td></tr>
     <tr><th>Contacto</th><td>{{ c.correo }} · {{ c.telefono }} · {{ c.celular }}</td></tr>
     <tr><th>Fechas</th><td>registro {{ c.fecha_reg|fecha }} · aceptación {{ c.fecha_acep|fecha }} · examen {{ c.fecha_exam|fecha }}</td></tr>
-    <tr><th>Educación</th><td>{% for n, e in c.educacion.items() %}{{ n }}: {{ e.institucion }} ({{ e.titulo }})<br>{% else %}—{% endfor %}</td></tr>
+    <tr><th>Educación</th><td>{% for n, e in educacion %}{{ n }}: {{ e.institucion }}{% if e.titulo %} ({{ e.titulo }}){% endif %}<br>{% else %}—{% endfor %}</td></tr>
     <tr><th>Capacitación</th><td>{% for k in c.capacitaciones %}{{ k.curso }} · {{ k.institucion }} · {{ k.horas }} h<br>{% else %}—{% endfor %}</td></tr>
     <tr><th>Experiencia</th><td>{% for e in c.experiencias %}{{ e.empresa }} · {{ e.desde|fecha }} a {{ e.hasta|fecha }} · {{ e.actividad }}<br>{% else %}—{% endfor %}</td></tr>
   </tbody>

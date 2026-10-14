@@ -67,7 +67,21 @@ def necesita_c03(cand):
     return "primaria" in edu and not any(n in edu for n in ("secundaria", "superior", "cuarto"))
 
 
-ARCHIVO_ASIGNACIONES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "asignaciones.json")
+def es_lecto(bloque):
+    """El bloque de primaria de la base guarda el estudio de lecto-escritura en CAPTEEC."""
+    return bool(bloque) and "CAPTEEC" in base.normalizar(bloque.get("institucion"))
+
+
+NIVELES_C02 = {"primaria": "Primaria", "secundaria": "Secundaria", "superior": "Tercer nivel", "cuarto": "Cuarto nivel"}
+
+
+def educacion_legible(cand):
+    """[(nivel como en el C02, bloque)] para mostrar la educación del candidato."""
+    return [("Lecto-escritura" if n == "primaria" and es_lecto(e) else NIVELES_C02.get(n, n), e)
+            for n, e in cand["educacion"].items()]
+
+
+ARCHIVO_ASIGNACIONES =os.path.join(os.path.dirname(os.path.abspath(__file__)), "asignaciones.json")
 
 
 def leer_asignaciones():
@@ -115,9 +129,7 @@ def datos_planos(cand, perfil, aj=None, asignaciones=None):
     # C02, fila "Lecto-escritura (C03) cuando aplique": el estudio en CAPTEEC de
     # quien rinde el C03. En la base va en el bloque de primaria; no es la primaria,
     # así que esa fila solo se llena si la base trae una escuela de verdad.
-    lecto = {}
-    if "CAPTEEC" in base.normalizar(edu.get("primaria", {}).get("institucion")):
-        lecto = edu.pop("primaria")
+    lecto = edu.pop("primaria") if es_lecto(edu.get("primaria")) else {}
     if necesita_c03(cand):
         edu["lecto"] = {**ESTUDIO_LECTO, **{k: v for k, v in lecto.items() if v}}
     edad = int(cand["edad"]) if cand["edad"].isdigit() else cand["edad"]

@@ -411,7 +411,7 @@ def candidato(perfil, codigo):
     return render_template("candidato.html", perfil=perfil, c=c, p=p, archivos=archivos,
                            examinadores=ajustes.examinadores_de(aj, perfil), exa=exa, ucs=ucs, lugar=lugar,
                            asignado=bool(a), estado_form=estado_formularios(perfil, codigo),
-                           c03=generar.necesita_c03(c))
+                           c03=generar.necesita_c03(c), educacion=generar.educacion_legible(c))
 
 
 @app.route("/descargar/<perfil>/<codigo>.zip")
